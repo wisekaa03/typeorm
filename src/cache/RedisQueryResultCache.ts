@@ -99,16 +99,20 @@ export class RedisQueryResultCache implements QueryResultCache {
         return new Promise<QueryResultCacheOptions|undefined>((ok, fail) => {
 
             if (options.identifier) {
-                this.client.get(options.identifier, (err: any, result: any) => {
-                    if (err) return fail(err);
-                    ok(JSON.parse(result));
-                });
+                if (this.client) {
+                    this.client.get(options.identifier, (err: any, result: any) => {
+                        if (err) return fail(err);
+                        ok(JSON.parse(result));
+                    });
+                }
 
             } else if (options.query) {
-                this.client.get(options.query, (err: any, result: any) => {
-                    if (err) return fail(err);
-                    ok(JSON.parse(result));
-                });
+                if (this.client) {
+                    this.client.get(options.query, (err: any, result: any) => {
+                        if (err) return fail(err);
+                        ok(JSON.parse(result));
+                    });
+                }
 
             } else {
                 ok(undefined);
